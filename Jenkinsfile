@@ -34,7 +34,8 @@ pipeline {
             steps {
                 script {
                     // SCP the Docker Compose file or other deployment scripts if needed
-                    sh 'scp -o StrictHostKeyChecking=no docker-compose.yml $DEPLOY_SERVER:$DEPLOY_PATH'
+                    sh 'ls'
+                    sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_SERVER:$DEPLOY_PATH'
 
                     // SSH into the remote server and deploy
                     sh """
