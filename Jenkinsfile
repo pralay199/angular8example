@@ -1,8 +1,9 @@
 pipeline {
+    
     agent { label 'my_server_1' }
 
-    parameters{
-        string(name: "version",defaultValue: "v1", description:"docker image version")
+    parameters {
+        string(name: 'version', defaultValue: 'v1', description: 'Docker image version')
     }
 
     environment {
