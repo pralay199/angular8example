@@ -4,8 +4,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: app_8_example:v1
-    container_name: my_container
+    image: ${docker_account}/${image_name}:${version}
+    container_name: ${image_name}_container
     ports:
       - "8000:80"
   #   command: "ng serve"
