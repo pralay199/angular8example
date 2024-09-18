@@ -5,22 +5,27 @@ pipeline {
         DOCKER_IMAGE = 'app_8_example:v1' // Replace with your image name
         DEPLOY_SERVER = 'root@37.60.254.21' // Replace with the actual server details
         DEPLOY_PATH = '/root/text/server' // Replace with the path on the server where you want to deploy
+        dockerHubCredentialsId = 'dockerhub-id'
     }
 
     stages {
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh 'docker-compose --build' // Builds the Docker image
-                }
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             sh 'sudo docker buildx build -t app_8_example:v1 .' // Builds the Docker image
+        //         }
+        //     }
+        // }
 
-        stage('Push Docker Image (Optional)') {
+        stage('Push Docker Image') {
             steps {
                 script {
-                    sh 'docker tag $DOCKER_IMAGE pralay1993/$DOCKER_IMAGE' // Optional: Tag the image for pushing to DockerHub
-                    sh 'docker push pralay1993/$DOCKER_IMAGE' // Optional: Push the image to DockerHub
+                    // Use Docker Hub credentials for pushing the image
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                        sh 'docker tag $DOCKER_IMAGE $DOCKER_USERNAME/$DOCKER_IMAGE'
+                        sh 'docker push $DOCKER_USERNAME/$DOCKER_IMAGE'
+                    }
                 }
             }
         }
