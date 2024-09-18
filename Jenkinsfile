@@ -8,12 +8,12 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'app_8_example' // Replace with your image name
-        docker_account = 'pralay1993'
+        docker_account = 'pralay199'
         image_version =  params.version
         DEPLOY_SERVER = '37.60.254.21' // Replace with the actual server details
         DEPLOY_USERNAME = 'root'
         DEPLOY_PATH = '~/' // Replace with the path on the server where you want to deploy
-        dockerHubCredentialsId = 'dockerhub-id'
+        docker-hub-credentials-id = 'dockerhub-id'
     }
 
     stages {
