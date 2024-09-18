@@ -4,7 +4,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: app_8_example:v2
+    image: app_8_example:v1
     container_name: my_container
     ports:
       - "8000:80"
