@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'sudo docker-compose --build' // Builds the Docker image
+                    sh 'sudo docker buildx build -t app_8_example:v1 .' // Builds the Docker image
                 }
             }
         }
