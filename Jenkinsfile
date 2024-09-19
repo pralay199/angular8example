@@ -34,7 +34,7 @@ pipeline {
         steps {
             script {
                 // Use the SSH credentials stored in Jenkins
-                sshagent(['ssh_key_cred']) {
+                sshagent(['ssh_credential']) {
                     // Secure Copy the docker-compose.yaml to the server
                     sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_USERNAME@$DEPLOY_SERVER:$DEPLOY_PATH'
 
