@@ -1,19 +1,19 @@
 pipeline {
-    
-    agent { label 'my_server_1' }
-
+    agent {
+        label 'my_server_1'  // Replace with your Jenkins agent label
+    }
     parameters {
         string(name: 'version', defaultValue: 'v1', description: 'Docker image version')
     }
 
     environment {
-        DOCKER_IMAGE = 'app_8_example' // Replace with your image name
-        docker_account = 'pralay199'
-        image_version =  params.version
+        DOCKER_IMAGE = 'angular8app' // Replace with your image name
+        DOCKER_ACCOUNT = 'pralay1993'
+        IMAGE_VERSION = "${params.version}" // Ensure version is passed as a parameter
         DEPLOY_SERVER = '37.60.254.21' // Replace with the actual server details
         DEPLOY_USERNAME = 'root'
-        DEPLOY_PATH = '~/' // Replace with the path on the server where you want to deploy
-        docker-hub-credentials-id = 'dockerhub-id'
+        DEPLOY_PATH = '~/' // Replace with the path on the server
+        DOCKER_CREDENTIALS_ID = 'pralay1993' // Corrected variable name
     }
 
     stages {
@@ -21,10 +21,10 @@ pipeline {
             steps {
                 script {
                     // Use Docker Hub credentials for pushing the image
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'docker compose build'
-                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-                        sh 'docker compose push'
+                    withCredentials([usernamePassword(credentialsId: 'pralay1993', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'docker-compose build'
+                        sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+                        sh 'docker-compose push'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
                 script {
                     // SCP the Docker Compose file or other deployment scripts if needed
                     sh 'ls'
-                    sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_USERNAME@$DEPLOY_SERVER:$DEPLOY_PATH'
+                    sh """scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_USERNAME@$DEPLOY_SERVER:$DEPLOY_PATH"""
 
                     // SSH into the remote server and deploy
                     sh """
