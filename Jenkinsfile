@@ -14,6 +14,7 @@ pipeline {
         DEPLOY_USERNAME = 'root'
         DEPLOY_PATH = '~/' // Replace with the path on the server
         DOCKER_CREDENTIALS_ID = 'pralay_doc_cred' // Corrected variable name
+        SSH_CREDENTIALS_ID = 'ssh_credential' // Replace with the actual Jenkins SSH credentials ID
     }
 
     stages {
@@ -21,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Use Docker Hub credentials for pushing the image
-                    withCredentials([usernamePassword(credentialsId: 'pralay_doc_cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'docker-compose build'
                         sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
                         sh 'docker-compose push'
@@ -30,28 +31,28 @@ pipeline {
             }
         }
 
-    stage('Deploy to Remote Server') {
-        steps {
-            script {
-                // Use the SSH credentials stored in Jenkins
-                sshagent(['ssh_credential']) {
-                    // Secure Copy the docker-compose.yaml to the server
-                    sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_USERNAME@$DEPLOY_SERVER:$DEPLOY_PATH'
+        stage('Deploy to Remote Server') {
+            steps {
+                script {
+                    // Use the SSH credentials stored in Jenkins
+                    sshagent([SSH_CREDENTIALS_ID]) {
+                        // Secure Copy the docker-compose.yaml to the server
+                        sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}'
 
-                    // SSH into the server and deploy
-                    sh """
-                    ssh -o StrictHostKeyChecking=no $DEPLOY_USERNAME@$DEPLOY_SERVER << EOF
-                    cd $DEPLOY_PATH
-                    docker-compose pull
-                    docker-compose down
-                    docker-compose up -d
-                    EOF
-                    """
+                        // SSH into the server and deploy
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << EOF
+                        cd ${DEPLOY_PATH}
+                        docker-compose pull
+                        docker-compose down
+                        docker-compose up -d
+                        EOF
+                        """
+                    }
                 }
             }
         }
     }
-
 
     post {
         always {
@@ -59,3 +60,4 @@ pipeline {
         }
     }
 }
+
