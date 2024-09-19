@@ -30,26 +30,28 @@ pipeline {
             }
         }
 
-        stage('Deploy to Remote Server') {
-            steps {
-                script {
-                    // SCP the Docker Compose file or other deployment scripts if needed
-                    sh 'ls'
-                    sh """scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_USERNAME@$DEPLOY_SERVER:$DEPLOY_PATH"""
+    stage('Deploy to Remote Server') {
+        steps {
+            script {
+                // Use the SSH credentials stored in Jenkins
+                sshagent(['ssh_key_cred']) {
+                    // Secure Copy the docker-compose.yaml to the server
+                    sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml $DEPLOY_USERNAME@$DEPLOY_SERVER:$DEPLOY_PATH'
 
-                    // SSH into the remote server and deploy
+                    // SSH into the server and deploy
                     sh """
                     ssh -o StrictHostKeyChecking=no $DEPLOY_USERNAME@$DEPLOY_SERVER << EOF
                     cd $DEPLOY_PATH
-                    docker-compose pull # If you're using Docker Compose with images from a registry
-                    docker-compose down # Stop the old containers
-                    docker-compose up -d # Start the new containers
+                    docker-compose pull
+                    docker-compose down
+                    docker-compose up -d
                     EOF
                     """
                 }
             }
         }
     }
+
 
     post {
         always {
