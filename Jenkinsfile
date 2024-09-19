@@ -17,7 +17,7 @@ pipeline {
         SSH_CREDENTIALS_ID = 'ssh_key_server_2' // Replace with the actual Jenkins SSH credentials ID
     }
 
-    // stages {
+    stages {
     //     stage('Push Docker Image') {
     //         steps {
     //             script {
