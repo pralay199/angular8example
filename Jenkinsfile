@@ -30,7 +30,8 @@ pipeline {
                 }
             }
         }
-
+    }
+}
     //     stage('Deploy to Remote Server') {
     //         steps {
     //             script {
@@ -59,5 +60,4 @@ pipeline {
     //         cleanWs() // Clean up the workspace after the pipeline runs
     //     }
     // }
-}
 
