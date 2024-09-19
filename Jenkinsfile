@@ -13,7 +13,7 @@ pipeline {
         DEPLOY_SERVER = '37.60.254.21' // Replace with the actual server details
         DEPLOY_USERNAME = 'root'
         DEPLOY_PATH = '~/' // Replace with the path on the server
-        DOCKER_CREDENTIALS_ID = 'pralay1993' // Corrected variable name
+        DOCKER_CREDENTIALS_ID = 'pralay_doc_cred' // Corrected variable name
     }
 
     stages {
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     // Use Docker Hub credentials for pushing the image
-                    withCredentials([usernamePassword(credentialsId: 'pralay1993', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'pralay_doc_cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'docker-compose build'
                         sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
                         sh 'docker-compose push'
