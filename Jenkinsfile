@@ -7,9 +7,9 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'angular8app' // Replace with your image name
         DOCKER_ACCOUNT = 'pralay1993'
-        IMAGE_VERSION = "${params.version}" // Ensure version is passed as a parameter
+        DOCKER_IMAGE = 'angular8app'
+        IMAGE_VERSION = "${params.version}"
         DEPLOY_SERVER = '37.60.254.21' // Replace with the actual server details
         DEPLOY_USERNAME = 'root'
         DEPLOY_PATH = '~/' // Replace with the path on the server
