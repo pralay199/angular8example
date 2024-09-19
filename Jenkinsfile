@@ -26,33 +26,34 @@ pipeline {
                         sh 'docker-compose build'
                         sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
                         sh 'docker-compose push'
+                        sh 'docker-compose up -d'
                     }
                 }
             }
         }
 
-        stage('Deploy to Remote Server') {
-            steps {
-                script {
-                    // Use the SSH credentials stored in Jenkins
-                    sshagent([SSH_CREDENTIALS_ID]) {
-                        // Secure Copy the docker-compose.yaml to the server
-                        sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}'
+    //     stage('Deploy to Remote Server') {
+    //         steps {
+    //             script {
+    //                 // Use the SSH credentials stored in Jenkins
+    //                 sshagent([SSH_CREDENTIALS_ID]) {
+    //                     // Secure Copy the docker-compose.yaml to the server
+    //                     sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}'
 
-                        // SSH into the server and deploy
-                        sh """
-                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << EOF
-                        cd ${DEPLOY_PATH}
-                        docker-compose pull
-                        docker-compose down
-                        docker-compose up -d
-                        EOF
-                        """
-                    }
-                }
-            }
-        }
-    }
+    //                     // SSH into the server and deploy
+    //                     sh """
+    //                     ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << EOF
+    //                     cd ${DEPLOY_PATH}
+    //                     docker-compose pull
+    //                     docker-compose down
+    //                     docker-compose up -d
+    //                     EOF
+    //                     """
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     post {
         always {
