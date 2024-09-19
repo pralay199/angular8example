@@ -70,9 +70,9 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs() // Clean up the workspace after the pipeline runs
-        }
-    }
+    // post {
+    //     always {
+    //         cleanWs() // Clean up the workspace after the pipeline runs
+    //     }
+    // }
 }
