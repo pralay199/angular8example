@@ -53,26 +53,22 @@ pipeline {
     //         }
     //     }
     // }
-        stage('Connect to Remote Server') {
-            steps {
-                script {
-                    // Use the SSH credentials stored in Jenkins
-                    sshagent([SSH_CREDENTIALS_ID]) {
-                        // Connect to the remote server using SSH
-                        sh """
-                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << 'EOF'
-                        # Copy the Docker Compose file to the remote server
-                        scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:
-                        # Deploy the application using Docker Compose
-                        docker-compose pull
-                        docker-compose down
-                        docker-compose up -d
-                        EOF
-                        """
-                    }
+    stage('Connect to Remote Server') {
+        steps {
+            script {
+                // Use the SSH credentials stored in Jenkins
+                sshagent([SSH_CREDENTIALS_ID]) {
+                    // Connect to the remote server using SSH
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << 'EOF'
+                    # Copy the Docker Compose file to the remote server
+                    scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:
+                    EOF
+                    """
                 }
             }
         }
+    }
 
     post {
         always {
