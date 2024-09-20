@@ -31,7 +31,7 @@ pipeline {
     //         }
     //     }
     // }
-    // stage('Deploy to Remote Server') {
+    //     stage('Deploy to Remote Server') {
     //         steps {
     //             script {
     //                 // Use the SSH credentials stored in Jenkins
@@ -53,18 +53,19 @@ pipeline {
     //         }
     //     }
     // }
-    stage('Connect to Remote Server') {
-        steps {
-            script {
-                // Use the SSH credentials stored in Jenkins
-                sshagent([SSH_CREDENTIALS_ID]) {
-                    // Connect to the remote server using SSH
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << 'EOF'
-                    # Copy the Docker Compose file to the remote server
-                    scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:
-                    EOF
-                    """
+        stage('Connect to Remote Server') {
+            steps {
+                script {
+                    // Use the SSH credentials stored in Jenkins
+                    sshagent([SSH_CREDENTIALS_ID]) {
+                        // Connect to the remote server using SSH
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << 'EOF'
+                        # Copy the Docker Compose file to the remote server
+                        scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:
+                        EOF
+                        """
+                    }
                 }
             }
         }
@@ -75,4 +76,5 @@ pipeline {
     //         cleanWs() // Clean up the workspace after the pipeline runs
     //     }
     // }
+    
 }
