@@ -18,47 +18,25 @@ pipeline {
     }
 
     stages {
-    //     stage('Push Docker Image') {
-    //         steps {
-    //             script {
-    //                 // Use Docker Hub credentials for pushing the image
-    //                 withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-    //                     sh 'docker-compose build'
-    //                     sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
-    //                     sh 'docker-compose push'
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    //     stage('Deploy to Remote Server') {
-    //         steps {
-    //             script {
-    //                 // Use the SSH credentials stored in Jenkins
-    //                 sshagent([SSH_CREDENTIALS_ID]) {
-    //                     // Secure Copy the docker-compose.yaml to the server
-    //                     sh 'scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:${DEPLOY_PATH}'
-
-    //                     // SSH into the server and deploy
-    //                     sh """
-    //                     ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << EOF
-    //                     cd ${DEPLOY_PATH}
-    //                     docker-compose pull
-    //                     docker-compose down
-    //                     docker-compose up -d
-    //                     EOF
-    //                     """
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Use Docker Hub credentials for pushing the image
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'docker-compose build'
+                        sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+                        sh 'docker-compose push'
+                    }
+                }
+            }
+        }
+    }
         stage('Connect to Remote Server') {
             steps {
                 script {
                     sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:./"""
                         sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} '
-                          DOCKER_ACCOUNT=${DOCKER_ACCOUNT}  DOCKER_IMAGE=${DOCKER_IMAGE} IMAGE_VERSION=${IMAGE_VERSION} docker-compose up'
+                          DOCKER_ACCOUNT=${DOCKER_ACCOUNT}  DOCKER_IMAGE=${DOCKER_IMAGE} IMAGE_VERSION=${IMAGE_VERSION} docker-compose pull docker-compose up '
                     """
                     }
                 }
