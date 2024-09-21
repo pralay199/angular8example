@@ -56,15 +56,10 @@ pipeline {
         stage('Connect to Remote Server') {
             steps {
                 script {
-                    // Use the SSH credentials stored in Jenkins
-                    sshagent([SSH_CREDENTIALS_ID]) {
-                        // Connect to the remote server using SSH
-                        sh """
-                        ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_SERVER} << 'EOF'
-                        # Copy the Docker Compose file to the remote server
-                        scp -o StrictHostKeyChecking=no docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:
-                        EOF
-                        """
+                    sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no data.json ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:./"""
+
+                        sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} 'docker-compose up'
+                    """
                     }
                 }
             }
