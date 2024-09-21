@@ -56,7 +56,7 @@ pipeline {
         stage('Connect to Remote Server') {
             steps {
                 script {
-                    sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no data.json ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:./"""
+                    sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:./"""
 
                         sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} 'docker-compose up'
                     """
