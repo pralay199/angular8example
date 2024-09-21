@@ -57,8 +57,9 @@ pipeline {
             steps {
                 script {
                     sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:./"""
-                    sh """DOCKER_ACCOUNT=${DOCKER_ACCOUNT} DOCKER_IMAGE=${DOCKER_IMAGE} IMAGE_VERSION=${IMAGE_VERSION}"""
-                        sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} 'docker-compose up'
+                        sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} '
+                          EXPORT DOCKER_ACCOUNT=${DOCKER_ACCOUNT} && EXPORT DOCKER_IMAGE=${DOCKER_IMAGE} && EXPORT IMAGE_VERSION=${IMAGE_VERSION}
+                          && docker-compose up'
                     """
                     }
                 }
