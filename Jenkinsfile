@@ -30,7 +30,6 @@ pipeline {
                 }
             }
         }
-    }
         stage('Connect to Remote Server') {
             steps {
                 script {
