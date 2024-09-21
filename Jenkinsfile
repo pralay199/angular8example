@@ -18,26 +18,24 @@ pipeline {
     }
 
     stages {
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    // Use Docker Hub credentials for pushing the image
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'docker-compose build'
-                        sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
-                        sh 'docker-compose push'
-                    }
-                }
-            }
-        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             // Use Docker Hub credentials for pushing the image
+        //             withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+        //                 sh 'docker-compose build'
+        //                 sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+        //                 sh 'docker-compose push'
+        //             }
+        //         }
+        //     }
+        // }
         stage('Connect to Remote Server') {
             steps {
                 script {
                     sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_SERVER}:./"""
                         sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} '
-                          DOCKER_ACCOUNT=${DOCKER_ACCOUNT}  DOCKER_IMAGE=${DOCKER_IMAGE} IMAGE_VERSION=${IMAGE_VERSION}
-                          docker-compose pull 
-                          docker-compose up'
+                          DOCKER_ACCOUNT=${DOCKER_ACCOUNT}  DOCKER_IMAGE=${DOCKER_IMAGE} IMAGE_VERSION=${IMAGE_VERSION} docker-compose pull  docker-compose up'
                     """
                     }
                 }
