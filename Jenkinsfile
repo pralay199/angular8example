@@ -23,7 +23,7 @@ pipeline {
         //         script {
         //             // Use Docker Hub credentials for pushing the image
         //             withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-        //                 sh 'docker-compose build'
+        //                 sh 'docker buildx build -t ${DOCKER_ACCOUNT}/${DOCKER_IMAGE}:${IMAGE_VERSION} .'
         //                 sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
         //                 sh 'docker-compose push'
         //             }
