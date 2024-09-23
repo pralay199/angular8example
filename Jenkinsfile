@@ -49,8 +49,8 @@ pipeline {
                     if(BRANCH_NAME=="qa"){
                         sh """echo yes"""
                     }
-                    else{
-                        sh """echo uiqnwiudhnqwud"""
+                    if(BRANCH_NAME=="prod"){
+                        sh """echo yes this is prod"""
                     }
                     
                     }
