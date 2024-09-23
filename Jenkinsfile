@@ -5,7 +5,6 @@ pipeline {
     parameters {
         string(name: 'version', defaultValue: 'v1', description: 'Docker image version')
     }
-
     environment {
         DOCKER_ACCOUNT = 'pralay1993'
         DOCKER_IMAGE = 'angular8app'
