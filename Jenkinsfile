@@ -50,7 +50,7 @@ pipeline {
                         sh """echo yes"""
                     }
                     else{
-                        sh """echo no"""
+                        sh """echo uiqnwiudhnqwud"""
                     }
                     
                     }
