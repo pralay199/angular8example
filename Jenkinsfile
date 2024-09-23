@@ -47,7 +47,7 @@ pipeline {
         stage('check branch') {
             steps {
                 script {
-                    sh """${BRANCH_NAME}"""
+                    sh """echo ${BRANCH_NAME}"""
                     }
                 }
         }
