@@ -47,7 +47,13 @@ pipeline {
         stage('check branch') {
             steps {
                 script {
-                    sh """echo ${BRANCH_NAME}"""
+                    if(${BRANCH_NAME}=="qa"){
+                        sh """echo yes"""
+                    }
+                    else{
+                        sh """echo no"""
+                    }
+                    
                     }
                 }
         }
