@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     if(BRANCH_NAME=="qa"){
-                        sh """echo yes this qa"""
+                        sh """echo yes this qa is added"""
                     }
                     else{
                         sh """echo no"""
