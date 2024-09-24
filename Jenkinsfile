@@ -50,7 +50,7 @@ pipeline {
                         sh """echo yes"""
                     }
                     if(BRANCH_NAME=="prod"){
-                        sh """echo yes this is prod"""
+                        sh """echo yes this is prod """
                     }
                     
                     }
