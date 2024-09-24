@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     if(BRANCH_NAME=="qa"){
-                         sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_QA_USERNAME}@${DEPLOY_SERVER}:./"""
+                         sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_QA_SERVER}:./"""
                              sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} '
                                export DOCKER_ACCOUNT=${DOCKER_ACCOUNT};
                                 export DOCKER_IMAGE=${DOCKER_IMAGE};
