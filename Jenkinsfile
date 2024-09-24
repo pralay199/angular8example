@@ -10,7 +10,7 @@ pipeline {
         DOCKER_ACCOUNT = 'pralay1993'
         DOCKER_IMAGE = 'angular8app'
         IMAGE_VERSION = "${params.version}"
-        DEPLOY_SERVER = '37.60.254.21' // Replace with the actual server details
+        DEPLOY_QA_SERVER = '37.60.254.21' // Replace with the actual server details
         DEPLOY_USERNAME = 'root'
         DEPLOY_PATH = '~/' // Replace with the path on the server
         DOCKER_CREDENTIALS_ID = 'pralay_doc_cred' // Corrected variable name
@@ -48,7 +48,12 @@ pipeline {
             steps {
                 script {
                     if(BRANCH_NAME=="qa"){
-                        sh """echo yes this qa is added """
+                         sh """sshpass -p rakesh123 scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_QA_USERNAME}@${DEPLOY_SERVER}:./"""
+                             sh """ sshpass -p rakesh123 ssh -o StrictHostKeyChecking=no  ${DEPLOY_USERNAME}@${DEPLOY_SERVER} '
+                               export DOCKER_ACCOUNT=${DOCKER_ACCOUNT};
+                                export DOCKER_IMAGE=${DOCKER_IMAGE};
+                                 export IMAGE_VERSION=${IMAGE_VERSION};
+                                 docker-compose pull && docker-compose up -d'
                     }
                     else{
                         sh """echo no"""
