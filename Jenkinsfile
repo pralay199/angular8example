@@ -24,9 +24,7 @@ pipeline {
         stage('Check Branch') {
             steps {
                 script {
-                    // Check if the branch is 'qa' and proceed with deployment if true
                     if (BRANCH_NAME == "qa") {
-                        // Copy the docker-compose.yaml to the QA server and execute the deployment commands
                         sh """
                         sshpass -p 'rakesh123' scp -o StrictHostKeyChecking=no ./docker-compose.yaml ${DEPLOY_USERNAME}@${DEPLOY_QA_SERVER}:${DEPLOY_PATH}
                         sshpass -p 'rakesh123' ssh -o StrictHostKeyChecking=no ${DEPLOY_USERNAME}@${DEPLOY_QA_SERVER} '
