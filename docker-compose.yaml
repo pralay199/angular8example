@@ -1,10 +1,12 @@
-version: '3.3'
+version: '3'
 services:
-  app:
-    image: ${DOCKER_ACCOUNT}/${DOCKER_IMAGE}:${IMAGE_VERSION}
-    container_name: ${DOCKER_IMAGE}_container
+  angular8app:
+    image: "${DOCKER_ACCOUNT}/${DOCKER_IMAGE}:${IMAGE_VERSION}"
     ports:
-      - "8000:80"
+      - "${APP_PORT}:80"  # Bind the APP_PORT to container port 80
+    environment:
+      - NODE_ENV=production
+
   #   command: "ng serve"
   # cpu: 2
   # memory: 4GB
